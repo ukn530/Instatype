@@ -16,11 +16,16 @@
 @end
 
 
-@interface ShareViewController : UIViewController <UITextViewDelegate, CategoryViewControllerDelegate>
+@interface ShareViewController : UIViewController <UITextViewDelegate, CategoryViewControllerDelegate, UIActionSheetDelegate>
 
 @property UIImage *image;
 @property id delegate;
 
+@property UIImageView *categoryIconImageView;
 @property UILabel *categoryLabel;
+
+@property NSMutableArray *snsIconArray;
+@property NSMutableArray *snsLabelArray;
+@property NSMutableArray *activeSNSArray;
 
 @end

@@ -336,6 +336,11 @@
     [_BGToolImageView setImage:Nil];
     [_BGToolImageView setBackgroundColor:sender.backgroundColor];
     
+    
+    
+    //set tect color in text field
+    [self changeTextColor];
+    
     _mixedColor = sender.backgroundColor;
 }
 
@@ -434,11 +439,38 @@
         [_editingPostView setBrushColor:_mixedColor];
     }
     
+    [self changeTextColor];
 }
 
 
 
-
+- (void)changeTextColor
+{
+    UIColor *color = [[_editingPostView imageView] backgroundColor];
+    
+    int numComponents = CGColorGetNumberOfComponents(color.CGColor);
+    int grayLevel = 0;
+    if (numComponents == 4)
+    {
+        const CGFloat *components = CGColorGetComponents(color.CGColor);
+        CGFloat red = components[0];
+        CGFloat green = components[1];
+        CGFloat blue = components[2];
+        grayLevel = red + green + blue;
+        
+    }
+    
+    UIColor *textColor = [UIColor blackColor];
+    if (grayLevel > 1) {
+        textColor = [UIColor blackColor];
+    } else {
+        textColor = [UIColor whiteColor];
+    }
+    
+    for (int i = 0; i < [[_editingPostView textViewArray] count]; i++) {
+        [[[_editingPostView textViewArray] objectAtIndex:i] setTextColor:textColor];
+    }
+}
 
 
 

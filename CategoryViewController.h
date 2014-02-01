@@ -15,4 +15,6 @@
 
 
 @property id delegate;
+@property NSString *activeCategory;
+
 @end
