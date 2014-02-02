@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "JSONParser.h"
+#import "CustomUITableViewCell.h"
 //#import "CellActivityView.h"
 
 @interface ActivityViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>

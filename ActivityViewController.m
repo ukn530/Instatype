@@ -28,11 +28,13 @@
 {
     [super viewDidLoad];
     
+    [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:0.388 green:0.741 blue:0.447 alpha:1.0]];
+    /*
     _jsonParser = [[JSONParser alloc] init];
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"feed" ofType:@"txt"];
     [_jsonParser parseJSONWithURL:path];
-    
+    */
     
     CGRect screen = [[UIScreen mainScreen] bounds];
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen.size.width, screen.size.height)];
@@ -46,7 +48,7 @@
 //Number of Row in Each Section.
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[_jsonParser feedArray] count];
+    return 10;
 }
 
 
@@ -55,12 +57,34 @@
 {
     
     NSString *cellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    CustomUITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[CustomUITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
         [cell setSeparatorInset:UIEdgeInsetsZero];
     }
+    [cell.imageView setImage:[UIImage imageNamed:@"icon_user.png"]];
+    
+    NSDictionary *stringAttributes1 = @{NSFontAttributeName : [UIFont fontWithName:@"Helvetica-Bold" size:14] };
+    NSAttributedString *string1 = [[NSAttributedString alloc] initWithString:@"ukn" attributes:stringAttributes1];
+    NSDictionary *stringAttributes2 = @{NSFontAttributeName : [UIFont systemFontOfSize:14.0f] };
+    NSAttributedString *string2 = [[NSAttributedString alloc] initWithString:@" liked your post" attributes:stringAttributes2];
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] init];
+    [mutableAttributedString appendAttributedString:string1];
+    [mutableAttributedString appendAttributedString:string2];
+    [cell.textLabel setAttributedText:mutableAttributedString];
+    
+    //[cell.textLabel setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+    [cell.textLabel setTextColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0]];
+    [cell.detailTextLabel setText:@"1 day ago"];
+    [cell.detailTextLabel setFont:[UIFont fontWithName:@"Helvetica" size:12]];
+    [cell.detailTextLabel setTextColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0]];
+    
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(cell.frame.size.width-44, 0, 44, 44)];
+    [imageView setImage:[UIImage imageNamed:@"post01.png"]];
+    [cell addSubview:imageView];
+    
     //CellActivityView *cellActivityView = [[CellActivityView alloc] initWithView:cell];
     //[cellActivityView drawCellView];
     
@@ -76,15 +100,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *contentsString = [@"ukn" stringByAppendingString:@"liked your type"];
+    NSString *contentsString = [@"ukn" stringByAppendingString:@" liked your type"];
     
     CGRect textViewRect = [contentsString boundingRectWithSize:CGSizeMake(200, 200)
                                                options:NSStringDrawingUsesLineFragmentOrigin
-                                            attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Helvetica-Bold" size:12]}
+                                            attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Futura-Medium" size:12]}
                                                context:nil];
     CGSize contentsSize = textViewRect.size;
     
-    int height = 52;
+    int height = 44;
     if (contentsSize.height + 28 > height) {
         height = contentsSize.height + 28;
     }
