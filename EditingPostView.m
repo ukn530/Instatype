@@ -225,10 +225,15 @@
             }
             [_editButton setHidden:YES];
             [_deleteButton setHidden:YES];
-            _activeTextViewNum = -1;
+            if (_activeTextViewNum != -1) {
+                _activeTextViewNum = -1;
+            } else {
+                [self addTextView];
+            }
         } else {
             touchAnyTextView = NO;
         }
+        
         
     }
 }
@@ -272,7 +277,7 @@
             
         }
         
-        if (sender.state == UIGestureRecognizerStateEnded && _activeTextViewNum > 0) {
+        if (sender.state == UIGestureRecognizerStateEnded && _activeTextViewNum >= 0) {
             [[[_textViewArray objectAtIndex:_activeTextViewNum] layer] setBorderColor:[[UIColor whiteColor] CGColor]];
             [_editButton setHidden:NO];
             [_deleteButton setHidden:NO];
@@ -374,7 +379,7 @@
             
         }
         
-        if (sender.state==UIGestureRecognizerStateEnded && _activeTextViewNum > 0) {
+        if (sender.state==UIGestureRecognizerStateEnded && _activeTextViewNum >= 0) {
             _scaleBefore=1;
             UITextView *textView = [_textViewArray objectAtIndex:_activeTextViewNum];
             [textView.layer setBorderColor:[[UIColor whiteColor] CGColor]];
@@ -497,12 +502,15 @@
 
 - (void)tapDeleteButton:(UIButton *)sender
 {
-    UITextView *textView = [_textViewArray objectAtIndex:_activeTextViewNum];
-    [textView removeFromSuperview];
-    [_textViewArray removeObjectAtIndex:_activeTextViewNum];
-    _activeTextViewNum = [_textViewArray count]-1;
-    [_editButton setHidden:YES];
-    [_deleteButton setHidden:YES];
+    if (_activeTextViewNum>=0) {
+        UITextView *textView = [_textViewArray objectAtIndex:_activeTextViewNum];
+        [textView removeFromSuperview];
+        [_textViewArray removeObjectAtIndex:_activeTextViewNum];
+        _activeTextViewNum = -1;
+        [_editButton setHidden:YES];
+        [_deleteButton setHidden:YES];
+        
+    }
 }
 
 -(void)tapAddtypeButton:(UIButton*)sender

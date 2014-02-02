@@ -130,31 +130,31 @@
     
     //Draw tool bar
     //fundermental position of tool bar
-    int numberOfTools = 4;
-    int intervalTools = [[_editingPostView imageView] frame].size.width / (numberOfTools * 2);
-    
+    int numberOfTools = 3;
+    int intervalTools = ([[_editingPostView imageView] frame].size.width-60) / (numberOfTools * 2);
     //left top corner of tool bar
-    CGPoint toolBarPoint = CGPointMake([[_editingPostView imageView] frame].origin.x, [[_editingPostView imageView] frame].size.height );
+    CGPoint toolBarPoint = CGPointMake([[_editingPostView imageView] frame].origin.x+30, [[_editingPostView imageView] frame].size.height );
     
+    /*
     UIImage *addTypeButtonImage = [UIImage imageNamed:@"tool_icon_addtext.png"];
     UIButton *addTypeButton = [[UIButton alloc] initWithFrame:CGRectMake(toolBarPoint.x + intervalTools - 22, toolBarPoint.y, 44, 44)];
     [addTypeButton setImage:addTypeButtonImage forState:UIControlStateNormal];
     [addTypeButton addTarget:self action:@selector(tapAddTypeToolButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:addTypeButton];
-    
+    */
     UIImage *fontMenuButtonImage = [UIImage imageNamed:@"tool_icon_font.png"];
-    UIButton *fontMenuButton = [[UIButton alloc] initWithFrame:CGRectMake(toolBarPoint.x + intervalTools*3 - 22, toolBarPoint.y, 44, 44)];
+    UIButton *fontMenuButton = [[UIButton alloc] initWithFrame:CGRectMake(toolBarPoint.x + intervalTools*1 - 22, toolBarPoint.y, 44, 44)];
     [fontMenuButton setImage:fontMenuButtonImage forState:UIControlStateNormal];
     [fontMenuButton addTarget:self action:@selector(tapFontToolButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:fontMenuButton];
     
     UIImage *brushButtonImage = [UIImage imageNamed:@"tool_icon_brush.png"];
-    UIButton *brushButton = [[UIButton alloc] initWithFrame:CGRectMake(toolBarPoint.x + intervalTools*5 - 22, toolBarPoint.y, 44, 44)];
+    UIButton *brushButton = [[UIButton alloc] initWithFrame:CGRectMake(toolBarPoint.x + intervalTools*3 - 22, toolBarPoint.y, 44, 44)];
     [brushButton setImage:brushButtonImage forState:UIControlStateNormal];
     [brushButton addTarget:self action:@selector(tapBrushToolButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:brushButton];
     
-    UIButton *BGMenuButton = [[UIButton alloc] initWithFrame:CGRectMake(toolBarPoint.x + intervalTools*7 - 22, toolBarPoint.y, 44, 44)];
+    UIButton *BGMenuButton = [[UIButton alloc] initWithFrame:CGRectMake(toolBarPoint.x + intervalTools*5 - 22, toolBarPoint.y, 44, 44)];
     _BGToolImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 24, 24)];
     [_BGToolImageView setBackgroundColor:[_editingPostView imageView].backgroundColor];
     [_BGToolImageView setUserInteractionEnabled:NO];
@@ -163,7 +163,7 @@
     [self.view addSubview:BGMenuButton];
     
     UIImage *iconArrowDownImage = [UIImage imageNamed:@"icon_triangle.png"];
-    _iconArrowDownImageView = [[UIImageView alloc] initWithFrame:CGRectMake(toolBarPoint.x + intervalTools * 3 - iconArrowDownImage.size.width/2, toolBarPoint.y + 44 - iconArrowDownImage.size.height, iconArrowDownImage.size.width, iconArrowDownImage.size.height)];
+    _iconArrowDownImageView = [[UIImageView alloc] initWithFrame:CGRectMake(toolBarPoint.x + intervalTools * 1 - iconArrowDownImage.size.width/2, toolBarPoint.y + 44 - iconArrowDownImage.size.height, iconArrowDownImage.size.width, iconArrowDownImage.size.height)];
     [_iconArrowDownImageView setImage:iconArrowDownImage];
     [self.view addSubview:_iconArrowDownImageView];
     

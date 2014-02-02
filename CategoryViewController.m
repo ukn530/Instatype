@@ -73,7 +73,7 @@
 {
     CustomUITableViewCell *cell = [[CustomUITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
     
-    [cell.textLabel setTextColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0]];
+    [cell.textLabel setTextColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0]];
     [cell.textLabel setFont:[UIFont fontWithName:@"Futura-Medium" size:14]];
     [cell setTintColor:[UIColor colorWithRed:0.388 green:0.741 blue:0.447 alpha:1.0]];
     
