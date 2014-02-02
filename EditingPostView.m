@@ -100,6 +100,9 @@
     [textView setScrollEnabled:NO];
     [textView.layer setMasksToBounds:NO];
     [textView becomeFirstResponder];
+    [textView setSpellCheckingType:UITextSpellCheckingTypeNo];
+    [textView setAutocorrectionType:UITextAutocorrectionTypeNo];
+    [textView setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     
     [textView setInputAccessoryView:_textToolView];
     CGRect textViewRect = [@"sample" boundingRectWithSize:_imageView.frame.size
@@ -269,7 +272,7 @@
             
         }
         
-        if (sender.state == UIGestureRecognizerStateEnded) {
+        if (sender.state == UIGestureRecognizerStateEnded && _activeTextViewNum > 0) {
             [[[_textViewArray objectAtIndex:_activeTextViewNum] layer] setBorderColor:[[UIColor whiteColor] CGColor]];
             [_editButton setHidden:NO];
             [_deleteButton setHidden:NO];
@@ -371,7 +374,7 @@
             
         }
         
-        if (sender.state==UIGestureRecognizerStateEnded) {
+        if (sender.state==UIGestureRecognizerStateEnded && _activeTextViewNum > 0) {
             _scaleBefore=1;
             UITextView *textView = [_textViewArray objectAtIndex:_activeTextViewNum];
             [textView.layer setBorderColor:[[UIColor whiteColor] CGColor]];
