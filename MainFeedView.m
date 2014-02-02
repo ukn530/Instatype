@@ -28,7 +28,7 @@
     CGRect screen = [_mainView bounds];
     
     //Profile Icon
-    CGRect profIconRect = CGRectMake(postPoint.x+2, postPoint.y, 32, 32);
+    CGRect profIconRect = CGRectMake(postPoint.x, postPoint.y, 32, 32);
     UIImage *profImage = [UIImage imageNamed:_authorImageData];
     UIImageView *profImageView = [[UIImageView alloc] initWithImage:profImage];
     [profImageView setFrame:profIconRect];
@@ -37,18 +37,9 @@
     //Main Image
     //UIImage *mainImage = [UIImage imageNamed:_mainImageData];
     CGRect rect = CGRectMake(postPoint.x, profIconRect.origin.y + profImageView.frame.size.height+6, screen.size.width-12, screen.size.width-12);
-    UIScrollView *mainImageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, rect.origin.y,screen.size.width , rect.size.height)];
-    [mainImageScrollView setContentSize:CGSizeMake(rect.origin.x/2*3 + _mainImage.size.width*3, rect.size.height)];
-    [mainImageScrollView setPagingEnabled:YES];
-    [mainImageScrollView setBounds:CGRectMake(0, 0, _mainImage.size.width+rect.origin.x/2, rect.size.height)];
-    [mainImageScrollView setClipsToBounds:NO];
-    [_mainView addSubview:mainImageScrollView];
-    [mainImageScrollView setContentOffset:CGPointMake(rect.origin.x / 2 * 1 + _mainImage.size.width * 1, 0)];
-    for (int i = 0; i < 3; i++) {
-        UIImageView *mainImageView = [[UIImageView alloc] initWithImage:_mainImage];
-        [mainImageView setFrame:CGRectMake(rect.origin.x/4 + (screen.size.width-rect.origin.x*1.5) * i, 0, rect.size.width, rect.size.height)];
-        [mainImageScrollView addSubview:mainImageView];
-    }
+    UIImageView *mainImageView = [[UIImageView alloc] initWithImage:_mainImage];
+    [mainImageView setFrame:rect];
+    [_mainView addSubview:mainImageView];
     
     
     //Author Name and getting that size
@@ -97,6 +88,8 @@
     UIButton *replyButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [replyButton setFrame:CGRectMake(rect.origin.x + rect.size.width - replyImage.size.width * 4, rect.origin.y + rect.size.height, replyImage.size.width, replyImage.size.height)];
     [replyButton setImage:replyImage forState:UIControlStateNormal];
+    [replyButton addTarget:_vc action:@selector(tapReplyBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [replyButton setTag:_postNumber];
     [_mainView addSubview:replyButton];
     
     
@@ -106,6 +99,8 @@
     [retweetButton setFrame:CGRectMake(rect.origin.x + rect.size.width - retweetImage.size.width * 3, rect.origin.y + rect.size.height, retweetImage.size.width, retweetImage.size.height)];
     [retweetButton setImage:retweetImage forState:UIControlStateNormal];
     [retweetButton setImage:retweetImageA forState:UIControlStateSelected];
+    [retweetButton addTarget:_vc action:@selector(tapRetweetBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [retweetButton setTag:_postNumber];
     [_mainView addSubview:retweetButton];
     
     
@@ -115,6 +110,8 @@
     [likeButton setFrame:CGRectMake(rect.origin.x + rect.size.width - likeImage.size.width * 2, rect.origin.y + rect.size.height, likeImage.size.width, likeImage.size.height)];
     [likeButton setImage:likeImage forState:UIControlStateNormal];
     [likeButton setImage:likeImageA forState:UIControlStateSelected];
+    [likeButton addTarget:_vc action:@selector(tapLikeBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [likeButton setTag:_postNumber];
     [_mainView addSubview:likeButton];
     
     
@@ -122,6 +119,8 @@
     UIButton *otherButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [otherButton setFrame:CGRectMake(rect.origin.x + rect.size.width - otherImage.size.width, rect.origin.y + rect.size.height, otherImage.size.width, otherImage.size.height)];
     [otherButton setImage:otherImage forState:UIControlStateNormal];
+    [otherButton addTarget:_vc action:@selector(tapOtherBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [otherButton setTag:_postNumber];
     [_mainView addSubview:otherButton];
 
     

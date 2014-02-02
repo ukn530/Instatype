@@ -92,11 +92,11 @@
         CGPoint postPoint = CGPointMake(6, postHeight);
         
         MainFeedView *mainFeedView = [[MainFeedView alloc] initWithView:_scrollView];
+        [mainFeedView setVc:self];
         [mainFeedView setMainImageData:mainImageData];
         
         //This is for user test
         [mainFeedView setMainImage:[[[UserDataManager sharedManager] postedImageArray] objectAtIndex:i]];
-        NSLog(@"number = %d",[[[UserDataManager sharedManager] postedImageArray] count]);
         
         [mainFeedView setAuthorName:authorName];
         [mainFeedView setAuthorImageData:authorImageData];
@@ -107,6 +107,7 @@
         [mainFeedView setRetypeNameArray:retypeNameArray];
         [mainFeedView setCommentNameArray:commentNameArray];
         [mainFeedView setCommentContentArray:commentContentArray];
+        [mainFeedView setPostNumber:i];
         
         [mainFeedView drawContents:postPoint];
         postHeight += [mainFeedView postRect].size.height;
@@ -121,9 +122,78 @@
 
 }
 
+- (void)tapReplyBtn:(UIButton*)sender
+{
+    _actionPostNumber = sender.tag;
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+    [actionSheet setDelegate:self];
+    [actionSheet addButtonWithTitle:@"Reply on this image"];
+    [actionSheet addButtonWithTitle:@"Reply on a new image"];
+    [actionSheet addButtonWithTitle:@"Cancel"];
+    [actionSheet setCancelButtonIndex:2];
+    [actionSheet showInView:self.view.window];
+}
+
+-(void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    switch (buttonIndex) {
+        case 0:
+            [self openPostModal:[[[UserDataManager sharedManager] postedImageArray] objectAtIndex:_actionPostNumber]];
+            break;
+        case 1:
+            [self openPostModal];
+            break;
+        case 2:
+            break;
+    }
+    
+}
+
+- (void)tapRetweetBtn:(UIButton*)sender
+{
+    [sender setImage:[UIImage imageNamed:@"action_icon_retweet_a.png"] forState:UIControlStateNormal];
+}
+
+- (void)tapLikeBtn:(UIButton*)sender
+{
+    [sender setImage:[UIImage imageNamed:@"action_icon_like_a.png"] forState:UIControlStateNormal];
+    
+}
+
+-(void)tapOtherBtn:(UIButton*)sender
+{
+    
+}
+
 
 //Open ModalView:PostViewController
 - (void)btnAction:(UIButton*)sender
+{
+    PostViewController *postViewController = [[PostViewController alloc] init];
+    [postViewController setDelegate:self];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:postViewController];
+    
+    [navigationController setModalPresentationStyle:UIModalPresentationFullScreen];
+    [navigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    
+    [self presentViewController:navigationController animated:YES completion:NULL];
+}
+
+- (void)openPostModal:(UIImage*)image
+{
+    PostViewController *postViewController = [[PostViewController alloc] init];
+    [postViewController setDelegate:self];
+    [postViewController setDefaultImage:image];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:postViewController];
+    
+    [navigationController setModalPresentationStyle:UIModalPresentationFullScreen];
+    [navigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    
+    [self presentViewController:navigationController animated:YES completion:NULL];
+}
+
+- (void)openPostModal
 {
     PostViewController *postViewController = [[PostViewController alloc] init];
     [postViewController setDelegate:self];

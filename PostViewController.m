@@ -110,6 +110,9 @@
     //Draw editing post view and textview
     _editingPostView = [[EditingPostView alloc] init];
     [_editingPostView drawPartsWithView:self.view];
+    if (_defaultImage) {
+        [[_editingPostView imageView] setImage:_defaultImage];
+    }
     
     
     //touch gesture

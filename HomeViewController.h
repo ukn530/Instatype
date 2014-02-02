@@ -13,11 +13,13 @@
 #import "UserDataManager.h"
 
 
-@interface HomeViewController : UIViewController<postViewControllerDelegate>
+@interface HomeViewController : UIViewController<postViewControllerDelegate, UIActionSheetDelegate>
 
 @property UIScrollView *scrollView;
 
 @property JSONParser *jsonParser;
+
+@property int actionPostNumber;
 
 - (void)closeModalView;
 

@@ -222,7 +222,7 @@
             }
             [_editButton setHidden:YES];
             [_deleteButton setHidden:YES];
-            //_activeTextViewNum = -1;
+            _activeTextViewNum = -1;
         } else {
             touchAnyTextView = NO;
         }

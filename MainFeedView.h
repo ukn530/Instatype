@@ -11,9 +11,11 @@
 @interface MainFeedView : NSObject
 
 @property UIView *mainView;
+@property UIViewController *vc;
 //it will be a ScrollView of Feed
 
 @property CGRect postRect;
+@property int postNumber;
 
 @property NSString *mainImageData;
 @property UIImage *mainImage;

@@ -22,6 +22,8 @@
 
 @interface PostViewController : UIViewController<shareViewControllerDelegate>
 
+@property UIImage *defaultImage;
+
 @property EditingPostView *editingPostView;
 @property ToolScrollView *toolScrollView;
 
