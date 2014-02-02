@@ -10,6 +10,7 @@
 #import "MainFeedView.h"
 #import "JSONParser.h"
 #import "PostViewController.h"
+#import "UserDataManager.h"
 
 
 @interface HomeViewController : UIViewController<postViewControllerDelegate>

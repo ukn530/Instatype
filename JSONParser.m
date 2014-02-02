@@ -28,7 +28,18 @@
 - (void)parseJSONWithURL:(NSString*)path{
     NSData *json_data = [NSData dataWithContentsOfFile:path];
     NSDictionary *feedDictionary = [NSJSONSerialization JSONObjectWithData:json_data options:0 error:nil];
-    _feedArray = [feedDictionary objectForKey:@"entry"];
+    //_feedArray = [feedDictionary objectForKey:@"entry"];
+    [[UserDataManager sharedManager] setFeedArray:[feedDictionary objectForKey:@"entry"]];
+    
+    if ([[[UserDataManager sharedManager] postedImageArray] count]==0) {
+        
+        NSMutableArray *array = [NSMutableArray array];
+        for (int i = 0; i < 10; i++) {
+            [array addObject:[UIImage imageNamed:@"post01.png"]];
+        }
+        [[UserDataManager sharedManager] setPostedImageArray:array];
+        
+    }
 }
 
 

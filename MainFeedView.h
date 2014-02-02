@@ -16,6 +16,7 @@
 @property CGRect postRect;
 
 @property NSString *mainImageData;
+@property UIImage *mainImage;
 @property NSString *authorImageData;
 
 @property NSString *authorName;

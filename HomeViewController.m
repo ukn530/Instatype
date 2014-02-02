@@ -49,6 +49,7 @@
     self.view = _scrollView;
     
     [self loadFeed];
+    
 }
 
 - (void)loadFeed
@@ -59,13 +60,12 @@
     NSString *path = [[NSBundle mainBundle] pathForResource:@"feed" ofType:@"txt"];
     [_jsonParser parseJSONWithURL:path];
     
-    
     CGRect screen = [[self view] bounds];
     int postHeight = 6;
     
     //take JSON data to HomeFeedView
-    for (int i = 0; i < [[_jsonParser feedArray] count]; i++) {
-        id feedContent = [[_jsonParser feedArray] objectAtIndex:i];
+    for (int i = 0; i < [[[UserDataManager sharedManager] feedArray] count]; i++) {
+        id feedContent = [[[UserDataManager sharedManager] feedArray] objectAtIndex:i];
         
         //get JSON data from _jasonParser
         NSString *mainImageData = [feedContent objectForKey:@"typeImage"];
@@ -93,6 +93,11 @@
         
         MainFeedView *mainFeedView = [[MainFeedView alloc] initWithView:_scrollView];
         [mainFeedView setMainImageData:mainImageData];
+        
+        //This is for user test
+        [mainFeedView setMainImage:[[[UserDataManager sharedManager] postedImageArray] objectAtIndex:i]];
+        NSLog(@"number = %d",[[[UserDataManager sharedManager] postedImageArray] count]);
+        
         [mainFeedView setAuthorName:authorName];
         [mainFeedView setAuthorImageData:authorImageData];
         [mainFeedView setRetypedName:retypedName];

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "UIPlaceHolderTextView.h"
 #import "CategoryViewController.h"
+#import "UserDataManager.h"
 
 
 @protocol shareViewControllerDelegate <NSObject>

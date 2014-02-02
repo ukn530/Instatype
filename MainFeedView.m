@@ -36,8 +36,8 @@
     
     //Main Image
     CGRect rect = CGRectMake(postPoint.x, profIconRect.origin.y + profImageView.frame.size.height+6, screen.size.width-12, screen.size.width-12);
-    UIImage *mainImage = [UIImage imageNamed:_mainImageData];
-    UIImageView *mainImageView = [[UIImageView alloc] initWithImage:mainImage];
+    //UIImage *mainImage = [UIImage imageNamed:_mainImageData];
+    UIImageView *mainImageView = [[UIImageView alloc] initWithImage:_mainImage];
     [mainImageView setFrame:rect];
     [_mainView addSubview:mainImageView];
     

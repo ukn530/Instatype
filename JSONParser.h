@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UserDataManager.h"
 
 @interface JSONParser : NSObject
 

@@ -296,6 +296,10 @@
     NSData *imageData = [[NSData alloc] initWithData:UIImagePNGRepresentation(_image)];
     [imageData writeToFile:path atomically:YES];
     
+    NSMutableArray *imageArray = [[UserDataManager sharedManager] postedImageArray];
+    [imageArray insertObject:_image atIndex:0];
+    [[UserDataManager sharedManager] setPostedImageArray:imageArray];
+    
     [self dismissViewControllerAnimated:YES completion:NULL];
     [_delegate closeModalView];
 }
