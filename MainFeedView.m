@@ -35,11 +35,20 @@
     [_mainView addSubview:profImageView];
     
     //Main Image
-    CGRect rect = CGRectMake(postPoint.x, profIconRect.origin.y + profImageView.frame.size.height+6, screen.size.width-12, screen.size.width-12);
     //UIImage *mainImage = [UIImage imageNamed:_mainImageData];
-    UIImageView *mainImageView = [[UIImageView alloc] initWithImage:_mainImage];
-    [mainImageView setFrame:rect];
-    [_mainView addSubview:mainImageView];
+    CGRect rect = CGRectMake(postPoint.x, profIconRect.origin.y + profImageView.frame.size.height+6, screen.size.width-12, screen.size.width-12);
+    UIScrollView *mainImageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, rect.origin.y,screen.size.width , rect.size.height)];
+    [mainImageScrollView setContentSize:CGSizeMake(rect.origin.x/2*3 + _mainImage.size.width*3, rect.size.height)];
+    [mainImageScrollView setPagingEnabled:YES];
+    [mainImageScrollView setBounds:CGRectMake(0, 0, _mainImage.size.width+rect.origin.x/2, rect.size.height)];
+    [mainImageScrollView setClipsToBounds:NO];
+    [_mainView addSubview:mainImageScrollView];
+    [mainImageScrollView setContentOffset:CGPointMake(rect.origin.x / 2 * 1 + _mainImage.size.width * 1, 0)];
+    for (int i = 0; i < 3; i++) {
+        UIImageView *mainImageView = [[UIImageView alloc] initWithImage:_mainImage];
+        [mainImageView setFrame:CGRectMake(rect.origin.x/4 + (screen.size.width-rect.origin.x*1.5) * i, 0, rect.size.width, rect.size.height)];
+        [mainImageScrollView addSubview:mainImageView];
+    }
     
     
     //Author Name and getting that size
