@@ -9,15 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "MainFeedView.h"
 #import "JSONParser.h"
+#import "PostViewController.h"
+#import "UserDataManager.h"
 
 
-@interface CategoryFeedViewController : UIViewController
+@interface CategoryFeedViewController : UIViewController<postViewControllerDelegate, UIActionSheetDelegate>
 
 @property NSString *categoryName;
+
 @property UIScrollView *scrollView;
 
 @property JSONParser *jsonParser;
 
+@property int actionPostNumber;
 
+- (void)closeModalView;
 
 @end

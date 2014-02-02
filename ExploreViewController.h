@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CategoryFeedViewController.h"
+#import "CustomUITableViewCell.h"
 
 @interface ExploreViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 

@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CustomUITableViewCell.h"
+
 @protocol CategoryViewControllerDelegate <NSObject>
 -(void)tapCellWithCategory:(NSString*)category;
 @end

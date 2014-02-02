@@ -18,11 +18,10 @@
 - (id)init
 {
     if(( self = [super init] )){
-		self.title = @"Explore";
         
         //Names of Sections
         _sectionNameArray = [NSArray arrayWithObjects:@"CATEGORIES", @"HASH TAGS", nil];
-        _categoryNameArray = [NSArray arrayWithObjects:@"Tweet", @"Quote", @"Fun", @"Poem", @"Love", @"Other", nil];
+        _categoryNameArray = [NSArray arrayWithObjects:@"Feeling", @"Question", @"Joke", @"Poem", @"Quote", @"Other", nil];
         _hashtagsNameArray = [NSArray arrayWithObjects:@"#Swim", @"#Saying", @"#IWanna", @"#Hot", @"#YouKnow", @"#WTF", nil];
 	}
     
@@ -33,6 +32,9 @@
 {
     [super viewDidLoad];
     
+    //[self setTitle:@"Explore"];
+    [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:0.388 green:0.741 blue:0.447 alpha:1.0]];
+    
     CGRect screen = [[UIScreen mainScreen] bounds];
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen.size.width, screen.size.height) style:UITableViewStyleGrouped];
     [tableView setDelegate:self];
@@ -40,15 +42,34 @@
     [tableView setBackgroundColor:[UIColor colorWithRed:0.961 green:0.961 blue:0.961 alpha:1.0]];
     [tableView setRowHeight:44];
     
-    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    _searchBar = [[UISearchBar alloc] init];
     [_searchBar setDelegate:self];
-    [_searchBar setBarTintColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]];
+    [_searchBar setBarTintColor:[UIColor clearColor]];
     [_searchBar setPlaceholder:@"User Name or Hash tag"];
-    [tableView setTableHeaderView:_searchBar];
+    [self.navigationItem setTitleView:_searchBar];
     
     self.view = tableView;
 }
 
+-(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UILabel *myLabel = [[UILabel alloc] init];
+    if (section==0) {
+        [myLabel setFrame:CGRectMake(6, 34, 320, 20)];
+    } else {
+        [myLabel setFrame:CGRectMake(6, 14, 320, 20)];
+        
+    }
+    [myLabel setFont:[UIFont fontWithName:@"Futura-Medium" size:14]];
+    [myLabel setTextColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0]];
+    [myLabel setText:[self tableView:tableView titleForHeaderInSection:section]];
+    [myLabel sizeToFit];
+    
+    UIView *headerView = [[UIView alloc] init];
+    [headerView addSubview:myLabel];
+    
+    return headerView;
+}
 
 //Number of Section
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -80,27 +101,48 @@
 {
     
     NSString *cellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    CustomUITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        [cell setSeparatorInset:UIEdgeInsetsZero];
+        cell = [[CustomUITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        //[cell setSeparatorInset:UIEdgeInsetsZero];
     }
     
     if (indexPath.section == 0) {
         [[cell textLabel] setText:[_categoryNameArray objectAtIndex:indexPath.row]];
-        [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
-        [[cell textLabel] setTextColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0]];
+        [[cell textLabel] setFont:[UIFont fontWithName:@"Futura-Medium" size:14]];
+        [[cell textLabel] setTextColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0]];
+        switch (indexPath.row) {
+            case 0:
+                [cell.imageView setImage:[UIImage imageNamed:@"icon_category_feeling.png"]];
+                break;
+            case 1:
+                [cell.imageView setImage:[UIImage imageNamed:@"icon_category_question.png"]];
+                break;
+            case 2:
+                [cell.imageView setImage:[UIImage imageNamed:@"icon_category_joke.png"]];
+                break;
+            case 3:
+                [cell.imageView setImage:[UIImage imageNamed:@"icon_category_poem.png"]];
+                break;
+            case 4:
+                [cell.imageView setImage:[UIImage imageNamed:@"icon_category_quote.png"]];
+                break;
+            case 5:
+                [cell.imageView setImage:[UIImage imageNamed:@"icon_category_other.png"]];
+                break;
+        }
         
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        [cell setSeparatorInset:UIEdgeInsetsMake(0, 45, 0, 0)];
     } else {
         UIButton *tagButtonLeft = [UIButton buttonWithType:UIButtonTypeCustom];
         [tagButtonLeft setFrame:CGRectMake(0, 0, 160, 44)];
         [tagButtonLeft setTitle:[_hashtagsNameArray objectAtIndex:indexPath.row*2] forState:UIControlStateNormal];
         [tagButtonLeft setTag:indexPath.row*2];
-        [tagButtonLeft setTitleColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0] forState:UIControlStateNormal];
+        [tagButtonLeft setTitleColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0] forState:UIControlStateNormal];
         [tagButtonLeft setTitleColor:[UIColor colorWithRed:0.2 green:0.4 blue:0.4 alpha:1.0] forState:UIControlStateHighlighted];
-        [tagButtonLeft.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
+        [tagButtonLeft.titleLabel setFont:[UIFont fontWithName:@"Futura-Medium" size:14]];
         [tagButtonLeft addTarget:self action:@selector(tapTagButton:) forControlEvents:UIControlEventTouchUpInside];
         [cell addSubview:tagButtonLeft];
         
@@ -108,9 +150,9 @@
         [tagButtonRight setFrame:CGRectMake(160, 0, 160, 44)];
         [tagButtonRight setTitle:[_hashtagsNameArray objectAtIndex:indexPath.row*2+1] forState:UIControlStateNormal];
         [tagButtonRight setTag:indexPath.row*2+1];
-        [tagButtonRight setTitleColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0] forState:UIControlStateNormal];
+        [tagButtonRight setTitleColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0] forState:UIControlStateNormal];
         [tagButtonRight setTitleColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0] forState:UIControlStateHighlighted];
-        [tagButtonRight.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
+        [tagButtonRight.titleLabel setFont:[UIFont fontWithName:@"Futura-Medium" size:14]];
         [tagButtonRight addTarget:self action:@selector(tapTagButton:) forControlEvents:UIControlEventTouchUpInside];
         [cell addSubview:tagButtonRight];
         
@@ -120,11 +162,12 @@
         leftBorder.backgroundColor = [UIColor colorWithWhite:0.8f
                                                          alpha:1.0f].CGColor;
         [tagButtonRight.layer addSublayer:leftBorder];
+        
+        [cell setSeparatorInset:UIEdgeInsetsZero];
     }
     
     return cell;
 }
-
 
 //When tap a row
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
