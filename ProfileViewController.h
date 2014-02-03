@@ -7,8 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JSONParser.h"
+#import "MainFeedView.h"
+#import "PostViewController.h"
 
-@interface ProfileViewController : UIViewController
+@interface ProfileViewController : UIViewController<UIActionSheetDelegate>
+
+@property UIScrollView *profScrollView;
+@property JSONParser *jsonParser;
+@property int actionPostNumber;
+@property int postHeight;
 
 
 @end
