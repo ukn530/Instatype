@@ -18,6 +18,7 @@
 {
     if(( self = [super init] )){
 		self.title = @"Profile";
+        _leftTabActive = YES;
 	}
 	return self;
 }
@@ -95,10 +96,20 @@
         [mutableAttributedString appendAttributedString:string1];
         [mutableAttributedString appendAttributedString:string2];
         
+        
         UILabel *followLabel = [[UILabel alloc] initWithFrame:CGRectMake(106 + 100 * i, descriptionLabel.frame.origin.y + descriptionLabel.frame.size.height + 2, 100, 20)];
         [followLabel setAttributedText:mutableAttributedString];
         [followLabel setTextColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0]];
+        [followLabel setUserInteractionEnabled:YES];
         [_profScrollView addSubview:followLabel];
+        
+        if (i==0) {
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFollowersBtn:)];
+            [followLabel addGestureRecognizer:tap];
+        } else {
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFollowingBtn:)];
+            [followLabel addGestureRecognizer:tap];
+        }
     }
     
     
@@ -114,15 +125,15 @@
     
     
     
-    UIButton *tabLeft = [[UIButton alloc] initWithFrame:CGRectMake(0, followButton.frame.origin.y + followButton.frame.size.height + 16, 155, 34)];
-    [tabLeft setImage:[UIImage imageNamed:@"button_tab_w.png"] forState:UIControlStateNormal];
-    [tabLeft addTarget:self action:@selector(tapLeftTab:) forControlEvents:UIControlEventTouchUpInside];
-    [_profScrollView addSubview:tabLeft];
+    _tabLeft = [[UIButton alloc] initWithFrame:CGRectMake(0, followButton.frame.origin.y + followButton.frame.size.height + 16, 155, 34)];
+    [_tabLeft setImage:[UIImage imageNamed:@"button_tab_w.png"] forState:UIControlStateNormal];
+    [_tabLeft addTarget:self action:@selector(tapLeftTab:) forControlEvents:UIControlEventTouchUpInside];
+    [_profScrollView addSubview:_tabLeft];
     
-    UIButton *tabRight = [[UIButton alloc] initWithFrame:CGRectMake(165, followButton.frame.origin.y + followButton.frame.size.height + 16, 155, 34)];
-    [tabRight setImage:[UIImage imageNamed:@"button_tab_g.png"] forState:UIControlStateNormal];
-    [tabRight addTarget:self action:@selector(tapRightTab:) forControlEvents:UIControlEventTouchUpInside];
-    [_profScrollView addSubview:tabRight];
+    _tabRight = [[UIButton alloc] initWithFrame:CGRectMake(165, followButton.frame.origin.y + followButton.frame.size.height + 16, 155, 34)];
+    [_tabRight setImage:[UIImage imageNamed:@"button_tab_g.png"] forState:UIControlStateNormal];
+    [_tabRight addTarget:self action:@selector(tapRightTab:) forControlEvents:UIControlEventTouchUpInside];
+    [_profScrollView addSubview:_tabRight];
     
     
     for (int i = 0; i < 2; i++) {
@@ -141,7 +152,7 @@
         [mutableAttributedString appendAttributedString:string1];
         [mutableAttributedString appendAttributedString:string2];
         
-        UILabel *tabLabel = [[UILabel alloc] initWithFrame:CGRectMake(0 + 165 * i, tabLeft.frame.origin.y + 7, 155, 20)];
+        UILabel *tabLabel = [[UILabel alloc] initWithFrame:CGRectMake(0 + 165 * i, _tabLeft.frame.origin.y + 7, 155, 20)];
         [tabLabel setAttributedText:mutableAttributedString];
         [tabLabel setTextAlignment:NSTextAlignmentCenter];
         [tabLabel setTextColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0]];
@@ -149,7 +160,7 @@
     }
     
     
-    _postHeight = tabRight.frame.origin.y + tabRight.frame.size.height;
+    _postHeight = _tabRight.frame.origin.y + _tabRight.frame.size.height;
     [self loadFeed];
 }
 
@@ -171,6 +182,7 @@
     NSString *path = [[NSBundle mainBundle] pathForResource:@"feed" ofType:@"txt"];
     [_jsonParser parseJSONWithURL:path];
     
+    _postHeight += 6;
     
     //take JSON data to HomeFeedView
     for (int i = 0; i < [[[UserDataManager sharedManager] feedArray] count]; i++) {
@@ -238,27 +250,13 @@
     _actionPostNumber = sender.tag;
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+    [actionSheet setTag:0];
     [actionSheet setDelegate:self];
     [actionSheet addButtonWithTitle:@"Reply on this image"];
     [actionSheet addButtonWithTitle:@"Reply on a new image"];
     [actionSheet addButtonWithTitle:@"Cancel"];
     [actionSheet setCancelButtonIndex:2];
     [actionSheet showInView:self.view.window];
-}
-
--(void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    switch (buttonIndex) {
-        case 0:
-            [self openPostModal:[[[UserDataManager sharedManager] postedImageArray] objectAtIndex:_actionPostNumber]];
-            break;
-        case 1:
-            [self openPostModal];
-            break;
-        case 2:
-            break;
-    }
-    
 }
 
 - (void)tapRetweetBtn:(UIButton*)sender
@@ -274,6 +272,58 @@
 
 -(void)tapOtherBtn:(UIButton*)sender
 {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+    [actionSheet setTag:1];
+    [actionSheet setDelegate:self];
+    [actionSheet addButtonWithTitle:@"Report this post"];
+    [actionSheet addButtonWithTitle:@"Share this post"];
+    [actionSheet addButtonWithTitle:@"Cancel"];
+    [actionSheet setCancelButtonIndex:2];
+    [actionSheet showInView:self.view.window];
+}
+
+
+-(void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (actionSheet.tag == 0) {
+        switch (buttonIndex) {
+            case 0:
+                [self openPostModal:[[[UserDataManager sharedManager] postedImageArray] objectAtIndex:_actionPostNumber]];
+                break;
+            case 1:
+                [self openPostModal];
+                break;
+            case 2:
+                break;
+        }
+    } else if(actionSheet.tag == 1) {
+        UIAlertView *reportAlert = [[UIAlertView alloc] init];
+        [reportAlert setMessage:@"Are your sure you want to report this post?"];
+        [reportAlert setCancelButtonIndex:0];
+        [reportAlert addButtonWithTitle:@"Cancel"];
+        [reportAlert addButtonWithTitle:@"Report"];
+        
+        
+        UIActionSheet *shareActionSheet = [[UIActionSheet alloc] init];
+        [shareActionSheet setTag:2];
+        [shareActionSheet setDelegate:self];
+        [shareActionSheet addButtonWithTitle:@"Share on Twitter"];
+        [shareActionSheet addButtonWithTitle:@"Share on Facebook"];
+        [shareActionSheet addButtonWithTitle:@"Share on Tumblr"];
+        [shareActionSheet addButtonWithTitle:@"Share on Instagram"];
+        [shareActionSheet addButtonWithTitle:@"Cancel"];
+        [shareActionSheet setCancelButtonIndex:4];
+        
+        switch (buttonIndex) {
+            case 0:
+                [reportAlert show];
+                break;
+            case 1:
+                [shareActionSheet showInView:self.view.window];
+                break;
+            case 2:
+                break;
+        }
+    }
     
 }
 
@@ -316,15 +366,35 @@
 
 
 
-
 - (void)tapLeftTab:(UIButton*)sender
 {
-    NSLog(@"tap");
+    if (!_leftTabActive) {
+        [sender setImage:[UIImage imageNamed:@"button_tab_w.png"] forState:UIControlStateNormal];
+        [_tabRight setImage:[UIImage imageNamed:@"button_tab_g.png"] forState:UIControlStateNormal];
+        _leftTabActive = YES;
+    }
 }
 
 - (void)tapRightTab:(UIButton*)sender
 {
-    NSLog(@"tap");
+    if (_leftTabActive) {
+        [sender setImage:[UIImage imageNamed:@"button_tab_w.png"] forState:UIControlStateNormal];
+        [_tabLeft setImage:[UIImage imageNamed:@"button_tab_g.png"] forState:UIControlStateNormal];
+        _leftTabActive = NO;
+    }
+}
+
+
+- (void)tapFollowersBtn:(UIGestureRecognizer*)sender
+{
+    FollowListViewController *followListViewController = [[FollowListViewController alloc] init];
+    [self.navigationController pushViewController:followListViewController animated:YES];
+}
+
+- (void)tapFollowingBtn:(UIGestureRecognizer*)sender
+{
+    FollowListViewController *followListViewController = [[FollowListViewController alloc] init];
+    [self.navigationController pushViewController:followListViewController animated:YES];
 }
 
 

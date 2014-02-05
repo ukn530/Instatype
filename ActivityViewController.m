@@ -61,7 +61,8 @@
     
     if (!cell) {
         cell = [[CustomUITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-        [cell setSeparatorInset:UIEdgeInsetsZero];
+        //[cell setSeparatorInset:UIEdgeInsetsZero];
+        [cell setSeparatorInset:UIEdgeInsetsMake(0, 45, 0, 0)];
     }
     [cell.imageView setImage:[UIImage imageNamed:@"icon_user.png"]];
     

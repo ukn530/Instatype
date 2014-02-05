@@ -127,27 +127,13 @@
     _actionPostNumber = sender.tag;
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+    [actionSheet setTag:0];
     [actionSheet setDelegate:self];
     [actionSheet addButtonWithTitle:@"Reply on this image"];
     [actionSheet addButtonWithTitle:@"Reply on a new image"];
     [actionSheet addButtonWithTitle:@"Cancel"];
     [actionSheet setCancelButtonIndex:2];
     [actionSheet showInView:self.view.window];
-}
-
--(void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    switch (buttonIndex) {
-        case 0:
-            [self openPostModal:[[[UserDataManager sharedManager] postedImageArray] objectAtIndex:_actionPostNumber]];
-            break;
-        case 1:
-            [self openPostModal];
-            break;
-        case 2:
-            break;
-    }
-    
 }
 
 - (void)tapRetweetBtn:(UIButton*)sender
@@ -163,6 +149,58 @@
 
 -(void)tapOtherBtn:(UIButton*)sender
 {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+    [actionSheet setTag:1];
+    [actionSheet setDelegate:self];
+    [actionSheet addButtonWithTitle:@"Report this post"];
+    [actionSheet addButtonWithTitle:@"Share this post"];
+    [actionSheet addButtonWithTitle:@"Cancel"];
+    [actionSheet setCancelButtonIndex:2];
+    [actionSheet showInView:self.view.window];
+}
+
+
+-(void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (actionSheet.tag == 0) {
+        switch (buttonIndex) {
+            case 0:
+                [self openPostModal:[[[UserDataManager sharedManager] postedImageArray] objectAtIndex:_actionPostNumber]];
+                break;
+            case 1:
+                [self openPostModal];
+                break;
+            case 2:
+                break;
+        }
+    } else if(actionSheet.tag == 1) {
+        UIAlertView *reportAlert = [[UIAlertView alloc] init];
+        [reportAlert setMessage:@"Are your sure you want to report this post?"];
+        [reportAlert setCancelButtonIndex:0];
+        [reportAlert addButtonWithTitle:@"Cancel"];
+        [reportAlert addButtonWithTitle:@"Report"];
+        
+        
+        UIActionSheet *shareActionSheet = [[UIActionSheet alloc] init];
+        [shareActionSheet setTag:2];
+        [shareActionSheet setDelegate:self];
+        [shareActionSheet addButtonWithTitle:@"Share on Twitter"];
+        [shareActionSheet addButtonWithTitle:@"Share on Facebook"];
+        [shareActionSheet addButtonWithTitle:@"Share on Tumblr"];
+        [shareActionSheet addButtonWithTitle:@"Share on Instagram"];
+        [shareActionSheet addButtonWithTitle:@"Cancel"];
+        [shareActionSheet setCancelButtonIndex:4];
+        
+        switch (buttonIndex) {
+            case 0:
+                [reportAlert show];
+                break;
+            case 1:
+                [shareActionSheet showInView:self.view.window];
+                break;
+            case 2:
+                break;
+        }
+    }
     
 }
 

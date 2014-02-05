@@ -10,6 +10,7 @@
 #import "JSONParser.h"
 #import "MainFeedView.h"
 #import "PostViewController.h"
+#import "FollowListViewController.h"
 
 @interface ProfileViewController : UIViewController<UIActionSheetDelegate>
 
@@ -17,6 +18,10 @@
 @property JSONParser *jsonParser;
 @property int actionPostNumber;
 @property int postHeight;
+
+@property UIButton *tabLeft;
+@property UIButton *tabRight;
+@property BOOL leftTabActive;
 
 
 @end
